@@ -1,0 +1,17 @@
+<div class=container>
+  <h2>Survey title: <%= @survey.title %></h2>
+  <h3>by <%= User.find(@survey.user_id).username %></h3></br>
+ 
+  <form action="/answer" method='post' style='padding-left:24px'>
+    <% @survey.questions.each do |q| %>
+      <label><%= q.body %></label></br>
+      <% q.choices.each do |c| %>
+  		<label for="<%= c.id %>"><%= c.body %></label>
+        <input type='radio' name='choices[<%= q.id %>]' id="<%= c.id %>" value='<%= c.body %>'></br>
+      <% end %></br>
+    <% end %></br>
+    <input type='hidden' name='survey_id' value='<%= @survey.id %>' >
+    <input type='submit' value='Submit'></br>
+  </form>
+
+</div>

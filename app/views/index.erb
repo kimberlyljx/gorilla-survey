@@ -1,0 +1,45 @@
+<% if session[:user_id] %>
+
+  <div class='container'>
+    <h2><a href="#">Create a Survey:</a></h2>
+      <form id="create_survey" method='post' action="/create">
+        <p><input type='text' name='title' placeholder='Title'></p></br>
+        <p>Tab to add answer, Enter for new question</p>
+        <div>
+          <p>Question:</p>
+          <input type=text class="tab_text active-text" name="questions[' + q + ']"></br>
+          </br>
+        </div>
+          <h3> Upload a Photo! </h3>
+          <input type="text" name="photo[caption]" placeholder="Caption">
+          <input type="file" name="image" >
+          <input type='submit' value='Create' id='submit' class='btn btn-primary'>
+      </form>
+  </div>
+
+  <div class='container'>
+    <h2>Available surveys: </h2>
+    <ul><% Survey.all.each do |s| %>
+      <li><a href='/survey/<%= s.id %>'><%=s.title%></a> by <%= User.find(s.user_id).username%></li>
+    <% end %>
+    </ul>
+  </div>
+
+  <div class='container'>
+    <h2>Your completed surveys: </h2>
+    <ul><% CompletedSurvey.where(user_id: session[:user_id]).each do |c| %>
+      <li><a href='/completed/<%= c.id %>'><%= c.survey.title %></a> completed on <%= c.updated_at %></li>
+      <% end %>
+    </ul>
+  </div>
+
+
+<% else %>
+  <div class="container">
+    <h2>Welcome to Survey Gorilla!</h2>
+    <p>Please login or create a new account to access Survey Gorrila's features.</p>
+    <form method='get' action="/users/login">
+      <input type='submit' value="Sign Up or Login">
+    </form></br>
+  </div>
+<% end %>
